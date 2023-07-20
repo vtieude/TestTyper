@@ -1,4 +1,5 @@
 import { FlightRepos, instance } from '../db/flight';
+import { Flight } from '../entities/flight';
 import { FlightInput } from '../models/flight';
 import { ReorderFlight } from '../util/helper';
 class FlightService {
@@ -17,6 +18,15 @@ class FlightService {
             }
             const newId = await this._flightRepo.insert('flight', input);
             return {...reorderFlights, id: newId};
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
+
+    public async getFlightById(id: number): Promise<any> {
+        try {
+            const flight = await this._flightRepo.query<Flight>('Select * from flight where id = ?', [id]);
+            return flight;
         } catch (error) {
             throw new Error(error.message);
         }
