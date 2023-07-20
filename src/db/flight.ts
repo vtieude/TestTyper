@@ -18,7 +18,7 @@ export class FlightRepos implements DatabaseRepo {
   
     async insert<T>(table: string, data: T): Promise<number> {
       try {
-        const [result] = await this._db.query(
+        const result = await this._db.query(
           `INSERT INTO ${table} SET ?`,
           data
         );
@@ -30,7 +30,7 @@ export class FlightRepos implements DatabaseRepo {
   
     async delete(table: string, whereClause: string): Promise<number> {
       try {
-        const [result] = await this._db.query(
+        const result = await this._db.query(
           `DELETE FROM ${table} WHERE ${whereClause}`
         );
         return result.affectedRows;
@@ -41,7 +41,7 @@ export class FlightRepos implements DatabaseRepo {
   
     async update<T>(table: string, data: T, whereClause: string): Promise<number> {
       try {
-        const [result] = await this._db.query(
+        const result = await this._db.query(
           `UPDATE ${table} SET ? WHERE ${whereClause}`,
           data
         );
