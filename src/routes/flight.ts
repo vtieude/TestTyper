@@ -2,6 +2,8 @@ const express = require('express');
 import {flightService} from '../services/flight';
 import { ValidateFlight } from '../util/validation';
 import { FlightInput } from '../models/flight';
+const { getClientIp } = require('@supercharge/request-ip');
+
 const routerExpress = express.Router();
 
 routerExpress.post('/', async (req, res, next) => {
@@ -15,8 +17,7 @@ routerExpress.post('/', async (req, res, next) => {
         messages,
       });
     }
-    const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    const neworderFlight = await flightService.insertFlight(flightInput, ipAddress);
+    const neworderFlight = await flightService.insertFlight(flightInput, getClientIp(req));
     res.status(201).json({ message: 'flights saved.', result: neworderFlight });
   } catch (error) {
     next(error);
